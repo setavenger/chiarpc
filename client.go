@@ -61,10 +61,11 @@ func NewRPCClient(settings ClientSettings) *Client {
 					InsecureSkipVerify: true,
 				},
 			},
-		}}
+		},
+	}
 }
 
-func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data interface{}, queryParams map[string]string) (map[string]interface{}, error) {
+func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data map[string]interface{}, queryParams map[string]string) ([]byte, error) {
 	if method == "" {
 		method = http.MethodPost
 	}
@@ -72,7 +73,7 @@ func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data i
 	url := fmt.Sprintf("%s:%d/%s", c.BaseUrl, port, rpcMethod)
 
 	if data == nil {
-		data = map[string]string{}
+		data = map[string]interface{}{}
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
@@ -106,13 +107,8 @@ func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data i
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	//log.Println(string(body))
-	var respData map[string]interface{}
+	log.Println(string(body))
+	log.Println("\n\n.")
 
-	err = json.Unmarshal(body, &respData)
-	if err != nil {
-		log.Println(err)
-	}
-
-	return respData, nil
+	return body, nil
 }

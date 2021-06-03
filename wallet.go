@@ -1,6 +1,7 @@
 package chiarpc
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 )
@@ -13,25 +14,17 @@ func (c Client) SendTransaction(amount uint64, address string, fee uint64, walle
 		walletId = 1
 	}
 
-	data := struct {
-		Amount   uint64 `json:"amount"`
-		Address  string `json:"address"`
-		Fee      uint64 `json:"fee"`
-		WalletId uint64 `json:"wallet_id"`
-	}{
-		Amount:   amount,
-		Address:  address,
-		Fee:      fee,
-		WalletId: walletId,
-	}
-
+	data := map[string]interface{}{"amount": amount, "address": address, "fee": fee, "wallet_id": walletId}
 	responseRaw, err := c.makeRPCCall(http.MethodPost, "send_transaction", WalletPort, data, nil)
 	log.Println(responseRaw)
 	if err != nil {
 		log.Println(err)
 	}
-	return responseRaw, nil
-}
+	var respData map[string]interface{}
+	err = json.Unmarshal(responseRaw, &respData)
+	if err != nil {
+		log.Println(err)
+	}
 
-type SendTransactionData struct {
+	return respData, nil
 }
