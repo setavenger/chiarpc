@@ -7,7 +7,7 @@ import (
 )
 
 func (c Client) GetBlockchainState() (*BlockchainState, error) {
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_blockchain_state", FullNodePort, nil, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_blockchain_state", c.FullNodePort, nil, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -27,7 +27,7 @@ func (c Client) GetBlockchainState() (*BlockchainState, error) {
 
 func (c Client) GetBlock(headerHash string) (*Block, error) {
 	data := map[string]interface{}{"header_hash": headerHash}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -46,7 +46,7 @@ func (c Client) GetBlock(headerHash string) (*Block, error) {
 
 func (c Client) GetBlocks(start, end uint64, excludeHeaderHash bool) (*[]Block, error) {
 	data := map[string]interface{}{"start": start, "end": end, "exclude_header_hash": excludeHeaderHash}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_blocks", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_blocks", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -65,7 +65,7 @@ func (c Client) GetBlocks(start, end uint64, excludeHeaderHash bool) (*[]Block, 
 
 func (c Client) GetBlockRecordByHeight(height uint64) (*BlockRecord, error) {
 	data := map[string]interface{}{"height": height}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_record_by_height", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_record_by_height", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -84,7 +84,7 @@ func (c Client) GetBlockRecordByHeight(height uint64) (*BlockRecord, error) {
 
 func (c Client) GetBlockRecord(headerHash string) (*BlockRecord, error) {
 	data := map[string]interface{}{"header_hash": headerHash}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_record", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_record", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -103,7 +103,7 @@ func (c Client) GetBlockRecord(headerHash string) (*BlockRecord, error) {
 
 func (c Client) GetBlockRecords(start, end uint64) (*[]BlockRecord, error) {
 	data := map[string]interface{}{"start": start, "end": end}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_records", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_block_records", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -121,7 +121,7 @@ func (c Client) GetBlockRecords(start, end uint64) (*[]BlockRecord, error) {
 }
 
 func (c Client) GetUnfinishedBlockHeaders() (*[]string, error) {
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_unfinished_block_headers", FullNodePort, nil, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_unfinished_block_headers", c.FullNodePort, nil, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -142,7 +142,7 @@ func (c Client) GetNetworkSpace(olderBlockHeaderHash, newerBlockHeaderHash strin
 	//older_block_header_hash
 	//newer_block_header_hash
 	data := map[string]interface{}{"older_block_header_hash": olderBlockHeaderHash, "newer_block_header_hash": newerBlockHeaderHash}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_network_space", FullNodePort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_network_space", c.FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err

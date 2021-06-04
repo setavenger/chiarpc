@@ -22,14 +22,24 @@ const (
 )
 
 type Client struct {
-	BaseUrl string
-	client  *http.Client
+	BaseUrl       string
+	client        *http.Client
+	DaemonPort    uint16
+	FullNodePort  uint16
+	WalletPort    uint16
+	FarmerPort    uint16
+	HarvesterPort uint16
 }
 
 type ClientSettings struct {
 	PathToCertFile   string
 	PathToCertSecret string
 	BaseUrl          string
+	DaemonPort       uint16
+	FullNodePort     uint16
+	WalletPort       uint16
+	FarmerPort       uint16
+	HarvesterPort    uint16
 }
 
 func NewRPCClient(settings ClientSettings) (*Client, error) {
@@ -46,6 +56,21 @@ func NewRPCClient(settings ClientSettings) (*Client, error) {
 	if settings.BaseUrl == "" {
 		settings.BaseUrl = baseUrl
 	}
+	if settings.DaemonPort == 0 {
+		settings.DaemonPort = DaemonPort
+	}
+	if settings.FullNodePort == 0 {
+		settings.FullNodePort = FullNodePort
+	}
+	if settings.WalletPort == 0 {
+		settings.WalletPort = WalletPort
+	}
+	if settings.FarmerPort == 0 {
+		settings.FarmerPort = FarmerPort
+	}
+	if settings.HarvesterPort == 0 {
+		settings.HarvesterPort = HarvesterPort
+	}
 
 	cert, err := tls.LoadX509KeyPair(settings.PathToCertFile, settings.PathToCertSecret)
 	if err != nil {
@@ -54,7 +79,12 @@ func NewRPCClient(settings ClientSettings) (*Client, error) {
 	}
 
 	client := &Client{
-		BaseUrl: settings.BaseUrl,
+		BaseUrl:       settings.BaseUrl,
+		DaemonPort:    settings.DaemonPort,
+		FullNodePort:  settings.FullNodePort,
+		WalletPort:    settings.WalletPort,
+		FarmerPort:    settings.FarmerPort,
+		HarvesterPort: settings.HarvesterPort,
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{

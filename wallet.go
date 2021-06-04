@@ -15,7 +15,7 @@ func (c Client) SendTransaction(amount uint64, address string, fee uint64, walle
 	}
 
 	data := map[string]interface{}{"amount": amount, "address": address, "fee": fee, "wallet_id": walletId}
-	responseRaw, err := c.makeRPCCall(http.MethodPost, "send_transaction", WalletPort, data, nil)
+	responseRaw, err := c.makeRPCCall(http.MethodPost, "send_transaction", c.WalletPort, data, nil)
 	if err != nil {
 		log.Println(err)
 		return nil, err
