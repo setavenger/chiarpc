@@ -10,6 +10,7 @@ func (c Client) GetBlockchainState() (*BlockchainState, error) {
 	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_blockchain_state", FullNodePort, nil, nil)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	var parsedResponse struct {
 		Success         bool            `json:"success"`
@@ -38,6 +39,7 @@ func (c Client) GetBlock(headerHash string) (*Block, error) {
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.Block, nil
 }
@@ -56,6 +58,7 @@ func (c Client) GetBlocks(start, end uint64, excludeHeaderHash bool) (*[]Block, 
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.Blocks, nil
 }
@@ -74,6 +77,7 @@ func (c Client) GetBlockRecordByHeight(height uint64) (*BlockRecord, error) {
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.BlockRecord, nil
 }
@@ -92,6 +96,7 @@ func (c Client) GetBlockRecord(headerHash string) (*BlockRecord, error) {
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.BlockRecord, nil
 }
@@ -110,6 +115,7 @@ func (c Client) GetBlockRecords(start, end uint64) (*[]BlockRecord, error) {
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.BlockRecords, nil
 }
@@ -118,6 +124,7 @@ func (c Client) GetUnfinishedBlockHeaders() (*[]string, error) {
 	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_unfinished_block_headers", FullNodePort, nil, nil)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	var parsedResponse struct {
 		Success bool     `json:"success"`
@@ -126,6 +133,7 @@ func (c Client) GetUnfinishedBlockHeaders() (*[]string, error) {
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.Headers, nil
 }
@@ -137,6 +145,7 @@ func (c Client) GetNetworkSpace(olderBlockHeaderHash, newerBlockHeaderHash strin
 	responseRaw, err := c.makeRPCCall(http.MethodPost, "get_network_space", FullNodePort, data, nil)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	var parsedResponse struct {
 		Success bool        `json:"success"`
@@ -145,6 +154,7 @@ func (c Client) GetNetworkSpace(olderBlockHeaderHash, newerBlockHeaderHash strin
 	err = json.Unmarshal(responseRaw, &parsedResponse)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	return &parsedResponse.Space, nil
 }

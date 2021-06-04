@@ -32,7 +32,7 @@ type ClientSettings struct {
 	BaseUrl          string
 }
 
-func NewRPCClient(settings ClientSettings) *Client {
+func NewRPCClient(settings ClientSettings) (*Client, error) {
 	homePath, err := os.UserHomeDir()
 	if err != nil {
 		panic(err)
@@ -50,9 +50,10 @@ func NewRPCClient(settings ClientSettings) *Client {
 	cert, err := tls.LoadX509KeyPair(settings.PathToCertFile, settings.PathToCertSecret)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 
-	return &Client{
+	client := &Client{
 		BaseUrl: settings.BaseUrl,
 		client: &http.Client{
 			Transport: &http.Transport{
@@ -63,6 +64,7 @@ func NewRPCClient(settings ClientSettings) *Client {
 			},
 		},
 	}
+	return client, err
 }
 
 func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data map[string]interface{}, queryParams map[string]string) ([]byte, error) {
@@ -78,6 +80,7 @@ func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data m
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(jsonData))
@@ -101,14 +104,12 @@ func (c Client) makeRPCCall(method string, rpcMethod string, port uint16, data m
 
 	resp, err := c.client.Do(req)
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return nil, err
 	}
 
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
-
-	log.Println(string(body))
-	log.Println("\n\n.")
 
 	return body, nil
 }
