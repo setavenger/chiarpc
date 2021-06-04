@@ -18,11 +18,14 @@ func (c Client) SendTransaction(amount uint64, address string, fee uint64, walle
 	responseRaw, err := c.makeRPCCall(http.MethodPost, "send_transaction", WalletPort, data, nil)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
 	var respData map[string]interface{}
 	err = json.Unmarshal(responseRaw, &respData)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
+
 	return respData, nil
 }
