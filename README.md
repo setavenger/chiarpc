@@ -1,4 +1,4 @@
-# chia-rpc
+# chiarpc
 A Golang wrapper for the core rpc methods of chia blockchain.
 
 See <a href=https://github.com/Chia-Network/chia-blockchain/wiki/RPC-Interfaces> here </a> 
