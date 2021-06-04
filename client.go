@@ -18,7 +18,7 @@ const (
 	WalletPort    = 9256
 	FarmerPort    = 8559
 	HarvesterPort = 8560
-	TestPort      = 8080
+	//TestPort      = 8080
 )
 
 type Client struct {
